@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import ApolloClient, { gql } from 'apollo-boost';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql',
@@ -19,29 +20,10 @@ const client = new ApolloClient({
   }
 });
 
-const query = gql`
-  {
-    organization(login: "apollographql") {
-      repositories(first: 5) {
-        nodes {
-          id
-          name
-          url
-          viewerHasStarred
-          stargazers {
-            totalCount
-          }
-        }
-      }
-    }
-  }
-`;
-
-client
-  .query({
-    query
-  })
-  .then(result => console.log(result));
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
 registerServiceWorker();
