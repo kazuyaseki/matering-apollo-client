@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { compose, withState, withPropsOnChange } from 'recompose';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import RepoItem from './components/RepoItem';
+import { debounce } from './util/debounce';
 
 const query = gql`
-  {
-    search(query: "language:JavaScript", type: REPOSITORY, first: 5) {
+  query search($searchText: String!) {
+    search(query: $searchText, type: REPOSITORY, first: 5) {
       edges {
         node {
           ... on Repository {
@@ -26,10 +28,21 @@ const query = gql`
   }
 `;
 
-const App = () => (
+const enhance = compose(
+  withState('searchText', 'setSearchText', 'GraphQL'),
+  withPropsOnChange(['setSearchText'], ({ setSearchText }) => ({
+    setSearchText: debounce(setSearchText, 500)
+  }))
+);
+
+const App = enhance(({ searchText, setSearchText }) => (
   <AppWrapper>
-    <Textbox placeholder="レポジトリ名を入力しましょう" />
-    <Query query={query}>
+    <Textbox
+      value={searchText}
+      onChange={e => setSearchText(e.target.value)}
+      placeholder="レポジトリ名を入力しましょう"
+    />
+    <Query query={query} variables={{ searchText }}>
       {({ loading, error, data }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>{error.toString()}</p>;
@@ -46,7 +59,7 @@ const App = () => (
       }}
     </Query>
   </AppWrapper>
-);
+));
 
 const AppWrapper = styled.div`
   width: 100vw;
