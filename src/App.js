@@ -28,8 +28,9 @@ const App = () => (
   <AppWrapper>
     <Textbox placeholder="レポジトリ名を入力しましょう" />
     <Query query={query}>
-      {({ loading, data }) => {
+      {({ loading, error, data }) => {
         if (loading) return <p>Loading...</p>;
+        if (error) return <p>{error.toString()}</p>;
 
         const repositories = data.organization.repositories.nodes;
 
