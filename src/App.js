@@ -7,16 +7,18 @@ import RepoItem from './components/RepoItem';
 
 const query = gql`
   {
-    organization(login: "apollographql") {
-      repositories(first: 5, isFork: false) {
-        nodes {
-          id
-          name
-          description
-          url
-          viewerHasStarred
-          stargazers {
-            totalCount
+    search(query: "language:JavaScript", type: REPOSITORY, first: 5) {
+      edges {
+        node {
+          ... on Repository {
+            id
+            name
+            description
+            url
+            viewerHasStarred
+            stargazers {
+              totalCount
+            }
           }
         }
       }
@@ -32,7 +34,7 @@ const App = () => (
         if (loading) return <p>Loading...</p>;
         if (error) return <p>{error.toString()}</p>;
 
-        const repositories = data.organization.repositories.nodes;
+        const repositories = data.search.edges.map(edge => edge.node);
 
         return (
           <RepoList>
