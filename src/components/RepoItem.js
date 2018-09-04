@@ -7,7 +7,7 @@ const RepoItem = ({ id, url, description, name, stargazers }) => (
       <Title href={url}>{name}</Title>
       <StarButton>Star {stargazers.totalCount}</StarButton>
     </HeaderWrapper>
-    <p>{description}</p>
+    <Description>{description}</Description>
   </StyledRepoItem>
 );
 
@@ -34,12 +34,19 @@ const Title = styled.a`
 `;
 
 const StarButton = styled.button`
+  width: 94px;
+  text-align: left;
   border: 1px solid rgba(27, 31, 35, 0.2);
   border-radius: 0.25em;
   background-image: url(./star.svg);
   background-repeat: no-repeat;
   background-position: 3px 3px;
   padding-left: 20px;
+`;
+
+const Description = styled.p`
+  font-size: 14px;
+  color: #586069;
 `;
 
 export default RepoItem;
