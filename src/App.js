@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { compose, withState, withPropsOnChange } from 'recompose';
+import { withState } from 'recompose';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import RepoItem from './components/RepoItem';
-import { debounce } from './util/debounce';
 
 const query = gql`
   query search($searchText: String!) {
@@ -28,12 +27,7 @@ const query = gql`
   }
 `;
 
-const enhance = compose(
-  withState('searchText', 'setSearchText', 'GraphQL'),
-  withPropsOnChange(['setSearchText'], ({ setSearchText }) => ({
-    setSearchText: debounce(setSearchText, 500)
-  }))
-);
+const enhance = withState('searchText', 'setSearchText', 'GraphQL');
 
 const App = enhance(({ searchText, setSearchText }) => (
   <AppWrapper>
