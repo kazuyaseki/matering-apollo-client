@@ -46,7 +46,7 @@ const App = enhance(({ searchText, setSearchText }) => (
         return (
           <RepoList>
             {repositories.map(repo => (
-              <RepoItem {...repo} />
+              <RepoItem key={repo.id} {...repo} />
             ))}
           </RepoList>
         );
