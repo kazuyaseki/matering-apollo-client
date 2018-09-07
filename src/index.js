@@ -4,11 +4,20 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
+import { persistCache } from 'apollo-cache-persist';
 import { ApolloProvider } from 'react-apollo';
+
+const cache = new InMemoryCache();
+
+persistCache({
+  cache,
+  storage: window.localStorage
+});
 
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql',
+  cache,
   request: operation => {
     operation.setContext({
       headers: {
