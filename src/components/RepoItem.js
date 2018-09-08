@@ -1,11 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
+import { gql } from 'apollo-boost';
+import { Mutation } from 'react-apollo';
 
-const RepoItem = ({ id, url, description, name, stargazers }) => (
+const ADD_STAR_REPOSITORY = gql`
+  mutation($id: ID!) {
+    addStar(input: { starrableId: $id }) {
+      starrable {
+        id
+        viewerHasStarred
+      }
+    }
+  }
+`;
+
+const REMOVE_STAR_REPOSITORY = gql`
+  mutation($id: ID!) {
+    removeStar(input: { starrableId: $id }) {
+      starrable {
+        id
+        viewerHasStarred
+      }
+    }
+  }
+`;
+
+const RepoItem = ({
+  id,
+  url,
+  description,
+  name,
+  viewerHasStarred,
+  stargazers
+}) => (
   <StyledRepoItem key={id}>
     <HeaderWrapper>
       <Title href={url}>{name}</Title>
-      <StarButton>Star {stargazers.totalCount}</StarButton>
+      <Mutation
+        mutation={
+          viewerHasStarred ? REMOVE_STAR_REPOSITORY : ADD_STAR_REPOSITORY
+        }
+        variables={{ id }}
+      >
+        {toggleStar => (
+          <StarButton onClick={toggleStar}>
+            {viewerHasStarred ? 'Unstar' : 'Star'} {stargazers.totalCount}
+          </StarButton>
+        )}
+      </Mutation>
     </HeaderWrapper>
     <Description>{description}</Description>
   </StyledRepoItem>
