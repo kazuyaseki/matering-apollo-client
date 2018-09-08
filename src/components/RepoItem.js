@@ -58,9 +58,9 @@ const StyledRepoItem = styled.li`
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   list-style: none;
   margin-bottom: 15px;
-  height: 120px;
+  height: 75px;
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 10px 15px;
 `;
 
 const HeaderWrapper = styled.div`
