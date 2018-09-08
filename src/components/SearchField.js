@@ -6,6 +6,11 @@ const SearchField = ({ text, setText, setSearchText }) => (
     <Textbox
       value={text}
       onChange={e => setText(e.target.value)}
+      onKeyDown={e => {
+        if (e.keyCode == 13) {
+          setSearchText(text);
+        }
+      }}
       placeholder="Search for Repository"
     />
     <SearchButton onClick={() => setSearchText(text)} />
