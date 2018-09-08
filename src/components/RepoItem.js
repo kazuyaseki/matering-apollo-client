@@ -87,6 +87,7 @@ const StarButton = styled.button`
 `;
 
 const Description = styled.p`
+  margin-top: 10px;
   font-size: 14px;
   color: #586069;
 `;
