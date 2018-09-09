@@ -7,8 +7,8 @@ import SearchField from './components/SearchField';
 import RepoItem from './components/RepoItem';
 
 const query = gql`
-  {
-    search(query: GraphQL, type: REPOSITORY, first: 10) {
+  query search($searchText: String!) {
+    search(query: $searchText, type: REPOSITORY, first: 10) {
       edges {
         node {
           ... on Repository {
