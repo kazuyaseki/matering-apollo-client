@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components';
+import { compose, withState } from 'recompose';
+
+import SearchField from './components/SearchField';
+import RepoItem from './components/RepoItem';
+
+const enhance = compose(
+  withState('searchText', 'setSearchText', ''),
+  withState('text', 'setText', '')
+);
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
 }
+
+const AppWrapper = styled.div`
+  width: 100vw;
+  height: 100%;
+  padding: 30px 50px;
+  background-color: rgba(34, 166, 153, 1);
+`;
+
+const RepoList = styled.ul`
+  padding: 0;
+  width: calc(100vw - 100px);
+`;
 
 export default App;
