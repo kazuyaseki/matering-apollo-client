@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import ApolloClient, { gql } from 'apollo-boost';
+import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
 const client = new ApolloClient({
@@ -17,6 +17,16 @@ const client = new ApolloClient({
         }`
       }
     });
+  },
+  onError: ({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      // graphQLErrors固有の処理
+      console.log(graphQLErrors);
+    }
+    if (networkError) {
+      // networkError固有の処理
+      console.log(networkError);
+    }
   }
 });
 

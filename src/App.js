@@ -31,8 +31,9 @@ const App = enhance(props => (
   <AppWrapper>
     <SearchField {...props} />
     <Query query={query} variables={{ searchText: props.searchText }}>
-      {({ loading, data }) => {
+      {({ loading, error, data }) => {
         if (loading) return <p>Loading...</p>;
+        if (error) return <p>{error.toString()}</p>;
 
         const repositories = data.search.edges.map(edge => edge.node);
 
