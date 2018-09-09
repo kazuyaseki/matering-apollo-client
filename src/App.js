@@ -1,37 +1,51 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { compose, withState } from 'recompose';
+import React from 'react';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
 
+import { enhance, AppWrapper, RepoList } from './AppResources';
 import SearchField from './components/SearchField';
 import RepoItem from './components/RepoItem';
 
-const enhance = compose(
-  withState('searchText', 'setSearchText', ''),
-  withState('text', 'setText', '')
-);
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-      </div>
-    );
+const query = gql`
+  {
+    search(query: GraphQL, type: REPOSITORY, first: 10) {
+      edges {
+        node {
+          ... on Repository {
+            id
+            name
+            description
+            url
+            viewerHasStarred
+            stargazers {
+              totalCount
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-const AppWrapper = styled.div`
-  width: 100vw;
-  height: 100%;
-  padding: 30px 50px;
-  background-color: rgba(34, 166, 153, 1);
 `;
 
-const RepoList = styled.ul`
-  padding: 0;
-  width: calc(100vw - 100px);
-`;
+const App = enhance(props => (
+  <AppWrapper>
+    <SearchField {...props} />
+    <Query query={query} variables={{ searchText: props.searchText }}>
+      {({ loading, data }) => {
+        if (loading) return <p>Loading...</p>;
+
+        const repositories = data.search.edges.map(edge => edge.node);
+
+        return (
+          <RepoList>
+            {repositories.map(repo => (
+              <RepoItem key={repo.id} {...repo} />
+            ))}
+          </RepoList>
+        );
+      }}
+    </Query>
+  </AppWrapper>
+));
 
 export default App;
