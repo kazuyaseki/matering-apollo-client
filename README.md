@@ -16,3 +16,4 @@ https://github.com/kazuyaseki/matering-apollo-client
 ```
 
 正しくは `mastering` なのですがレポジトリ名自体が間違っているため、`matering-apollo-client` のレポジトリ名で clone いただけますと幸いです。
+(恥ずかしいですが、本に書かれてある通りの内容が動く方が良いと判断したため、そのままとさせてください。)
