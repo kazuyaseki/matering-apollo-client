@@ -70,3 +70,8 @@ const query = gql`
   }
 `;
 ```
+
+## 電子版をお求めの方
+
+BOOTH にて販売をしております。
+[BOOTH - Mastering Apollo Client](https://seyaseya.booth.pm/items/1039687)
